@@ -16,16 +16,21 @@ class Pymol3 < Formula
   depends_on "python3" => "with-tcl-tk"
   depends_on "homebrew/dupes/tcl-tk" => ["with-threads", "with-x11"]
   depends_on :x11
+  patch :DATA
+
+  resource "Pmw" do
+    url "https://files.pythonhosted.org/packages/e7/20/8d0c4ba96a5fe62e1bcf2b8a212ccfecd67ad951e8f3e89cf147d63952aa/Pmw-2.0.1.tar.gz"
+    sha256 "0b9d28f52755a7a081b44591c3dd912054f896e56c9a627db4dd228306ad1120"
+  end
 
   def install
     ENV.append_to_cflags "-Qunused-arguments" if MacOS.version < :mavericks
 
     system "python3", "-s", "setup.py", "install",
-                     "--bundled-pmw",
                      "--install-scripts=#{libexec}/bin",
-                     "--install-lib=#{libexec}/lib/python2.7/site-packages"
+                     "--install-lib=#{libexec}/lib/python3.6/site-packages"
 
-    bin.install libexec/"bin/pymol"
+    bin.install libexec/"bin/pymol3"
   end
 
   def caveats; <<-EOS.undent
@@ -38,6 +43,30 @@ class Pymol3 < Formula
   end
 
   test do
-    system bin/"pymol3", libexec/"lib/python3.6/site-packages/pymol/pymol_path/data/demo/pept.pdb"
+    system bin/"pymol3", libexec/"lib/python3.6/site-packages/pymol3/pymol_path/data/demo/pept.pdb"
   end
 end
+__END__
+diff --git a/setup.py b/setup.py
+index 0b6161f..61fb030 100644
+--- a/setup.py
++++ b/setup.py
+@@ -62,7 +62,7 @@ class install_pymol(install):
+     def finalize_options(self):
+         install.finalize_options(self)
+         if self.pymol_path is None:
+-            self.pymol_path = os.path.join(self.install_libbase, 'pymol', 'pymol_path')
++            self.pymol_path = os.path.join(self.install_libbase, 'pymol3', 'pymol_path')
+         elif self.root is not None:
+             self.pymol_path = change_root(self.root, self.pymol_path)
+ 
+@@ -107,7 +107,7 @@ class install_pymol(install):
+         if sys.platform.startswith('win'):
+            launch_script = 'pymol.bat'
+         else:
+-           launch_script = 'pymol'
++           launch_script = 'pymol3'
+ 
+         self.mkpath(self.install_scripts)
+         launch_script = os.path.join(self.install_scripts, launch_script)
+
