@@ -25,7 +25,8 @@ class Pymol3 < Formula
 
   def install
     ENV.append_to_cflags "-Qunused-arguments" if MacOS.version < :mavericks
-
+    ENV.prepend_create_path "PYTHONPATH", "#{libexec}/python3.6/site-packages"
+    resource("Pmw").stage { system "python3", "setup.py", "install", "--prefix=#{libexec}" }
     system "python3", "-s", "setup.py", "install",
                      "--install-scripts=#{libexec}/bin",
                      "--install-lib=#{libexec}/lib/python3.6/site-packages"
