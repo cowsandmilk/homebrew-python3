@@ -1,8 +1,8 @@
 class Pymol < Formula
   desc "OpenGL based molecular visualization system"
   homepage "http://pymol.org"
-  url "https://downloads.sourceforge.net/project/pymol/pymol/1.8/pymol-v1.8.2.1.tar.bz2"
-  sha256 "fc5d33d7e36364567462cee19b9b132530a83cbab3fafcf373f2a17f127b3f4e"
+  url "https://downloads.sourceforge.net/project/pymol/pymol/1.8/pymol-v1.8.4.0.tar.bz2"
+  sha256 "b6147befe74844dd23550461b831b2fa6d170d4456f0059cf93fb1e8cb43d279"
   head "https://svn.code.sf.net/p/pymol/code/trunk/pymol"
 
   bottle do
@@ -13,14 +13,14 @@ class Pymol < Formula
   end
 
   depends_on "glew"
-  depends_on "python" => "with-tcl-tk"
+  depends_on "python3" => "with-tcl-tk"
   depends_on "homebrew/dupes/tcl-tk" => ["with-threads", "with-x11"]
   depends_on :x11
 
   def install
     ENV.append_to_cflags "-Qunused-arguments" if MacOS.version < :mavericks
 
-    system "python", "-s", "setup.py", "install",
+    system "python3", "-s", "setup.py", "install",
                      "--bundled-pmw",
                      "--install-scripts=#{libexec}/bin",
                      "--install-lib=#{libexec}/lib/python2.7/site-packages"
@@ -38,6 +38,6 @@ class Pymol < Formula
   end
 
   test do
-    system bin/"pymol", libexec/"lib/python2.7/site-packages/pymol/pymol_path/data/demo/pept.pdb"
+    system bin/"pymol3", libexec/"lib/python3.6/site-packages/pymol/pymol_path/data/demo/pept.pdb"
   end
 end
