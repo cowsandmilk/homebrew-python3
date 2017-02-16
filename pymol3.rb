@@ -1,4 +1,4 @@
-class Pymol < Formula
+class Pymol3 < Formula
   desc "OpenGL based molecular visualization system"
   homepage "http://pymol.org"
   url "https://downloads.sourceforge.net/project/pymol/pymol/1.8/pymol-v1.8.4.0.tar.bz2"
